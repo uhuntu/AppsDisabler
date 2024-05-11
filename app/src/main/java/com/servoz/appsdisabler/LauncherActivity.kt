@@ -11,6 +11,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -50,6 +51,7 @@ val Int.dp: Int
 class LauncherActivity : AppCompatActivity() {
 
     private var prefFile: String = "com.servoz.appsdisabler.prefs"
+    private var TAG: String = "LauncherActivity"
     private var prefs: SharedPreferences? = null
     private var currentTag=""
     private var tabsPages= arrayListOf<TagView>()
@@ -140,8 +142,10 @@ class LauncherActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if(prefs!!.getString("SCREEN_TIMEOUT","")!="" && prefs!!.getString("SCREEN_TIMEOUT","")!="Disabled")
+        val valJob = prefs!!.getString("SCREEN_TIMEOUT","")!="" && prefs!!.getString("SCREEN_TIMEOUT","")!="Disabled"
+        if(valJob) {
             unregisterReceiver(mScreenStateReceiver)
+        }
     }
 
     override fun onResume() {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import petrov.kristiyan.colorpicker.ColorPicker.OnChooseColorListener
 class Config:Fragment() {
 
     private var prefFile: String = "com.servoz.appsdisabler.prefs"
+    private var TAG: String = "Config"
     private var prefs: SharedPreferences? = null
 
     override fun onCreateView(
@@ -211,12 +213,15 @@ class Config:Fragment() {
         val titles= arrayListOf(getString(R.string.disabled), "0", "1" ,"5", "10", "15")
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, titles)
         screen_timeout.adapter = arrayAdapter
-        screen_timeout.setSelection(when(prefs!!.getString("SCREEN_TIMEOUT","")) {
-            getString(R.string.disabled) -> 0
-            "0" -> 1
-            "1" -> 2
-            else -> 3
-        })
+        val st = prefs!!.getString("SCREEN_TIMEOUT","")
+        val select = when(st) {
+            getString(R.string.disabled) -> 0     // "Disabled"
+            "" -> 0             // "Disabled"
+            "0" -> 1            // "0"
+            "1" -> 2            // "1"
+            else -> 3           // "5"
+        }
+        screen_timeout.setSelection(select);
         screen_timeout.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
