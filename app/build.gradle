@@ -6,7 +6,6 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "com.servoz.appsdisabler"
@@ -32,6 +31,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    namespace 'com.servoz.appsdisabler'
 
 }
 android.defaultConfig.vectorDrawables.useSupportLibrary = true
