@@ -49,5 +49,5 @@ private fun getPendingIntent(context: Context): PendingIntent {
     val intent = Intent(context, WidgetAniActivity::class.java)
     intent.action = "26"
     intent.putExtra("ENABLE_ALL", "YES")
-    return PendingIntent.getActivity(context, 26, intent, 0)
+    return PendingIntent.getActivity(context, 26, intent, PendingIntent.FLAG_IMMUTABLE)
 }

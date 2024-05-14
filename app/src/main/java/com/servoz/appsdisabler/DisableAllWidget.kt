@@ -49,5 +49,5 @@ private fun getPendingIntent(context: Context): PendingIntent {
     val intent = Intent(context, WidgetAniActivity::class.java)
     intent.action = "25"
     intent.putExtra("DISABLE_ALL", "YES")
-    return PendingIntent.getActivity(context, 25, intent, 0)
+    return PendingIntent.getActivity(context, 25, intent, PendingIntent.FLAG_IMMUTABLE)
 }
