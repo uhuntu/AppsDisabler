@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.servoz.appsdisabler.tools.Db
 import com.servoz.appsdisabler.tools.RunCommand
+import com.tes.devgetter.TesManager
 import kotlinx.android.synthetic.main.widget_ani_layout.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -77,8 +78,13 @@ class WidgetAniActivity : AppCompatActivity() {
         val dbHandler = Db(context, null)
         val apps=dbHandler.getData("app", "`launcher` IS NULL")
         apps.sortBy{it[1].toLowerCase(Locale.ROOT)}
-        for(app in apps)
-            objCmd.sudoForResult("pm ${if(enable)"enable" else "disable"} ${app[0]}")
+        for(app in apps) {
+            if (enable) {
+                TesManager.getInstance().enableApp(app[0]);
+            } else {
+                TesManager.getInstance().disableApp(app[0]);
+            }
+        }
     }
 
     private fun dragApp(app:String, enable:Boolean){

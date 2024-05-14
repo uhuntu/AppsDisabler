@@ -1,14 +1,16 @@
 package com.servoz.appsdisabler.tools
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.servoz.appsdisabler.R
 import java.io.*
 import java.net.DatagramSocket
 import java.net.Socket
-
+import com.tes.devgetter.TesManager
 
 class RunCommand {
+    private var TAG: String = "RunCommand"
 
     fun sudoForResult(vararg strings: String): String? {
         var res: String? = ""
@@ -76,13 +78,15 @@ class RunCommand {
 
     fun enableApp(context: Context,app:ArrayList<String>){
         val objCmd= RunCommand()
-        objCmd.sudoForResult("pm enable ${app[0]}")
+        Log.d(TAG, "enableApp " + app[0]);
+        TesManager.getInstance().enableApp(app[0]);
         Toast.makeText(context, "${app[1]} ${context.getString(R.string.enabled)}", Toast.LENGTH_SHORT).show()
     }
 
     fun disableApp(context: Context,app:ArrayList<String>){
         val objCmd= RunCommand()
-        objCmd.sudoForResult("pm disable ${app[0]}")
+        Log.d(TAG, "disableApp " + app[0]);
+        TesManager.getInstance().disableApp(app[0]);
         Toast.makeText(context, "${app[1]} ${context.getString(R.string.disabled)}", Toast.LENGTH_SHORT).show()
     }
 }

@@ -26,6 +26,8 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.servoz.appsdisabler.tools.Db
 import com.servoz.appsdisabler.tools.RunCommand
+import com.tes.devgetter.ConnectionCallback
+import com.tes.devgetter.TesManager
 import kotlinx.android.synthetic.main.help_launcher.view.*
 import kotlinx.android.synthetic.main.launcher_layout.*
 import kotlinx.android.synthetic.main.slide_fragment.*
@@ -34,7 +36,6 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.lang.Thread.sleep
 import java.util.*
-import kotlin.collections.ArrayList
 
 /*
 ROAD MAP:
@@ -68,6 +69,15 @@ class LauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.launcher_layout)
 
+        TesManager.getInstance().init(this, object : ConnectionCallback {
+            override fun onConnected() {
+                Log.i(TAG, "onConnected: ")
+            }
+
+            override fun onDisconnected() {
+                Log.i(TAG, "onDisconnected: ")
+            }
+        })
 
         prefs = getSharedPreferences(prefFile, 0)
         val objCmd= RunCommand()
@@ -328,7 +338,11 @@ class LauncherActivity : AppCompatActivity() {
         for((c,app) in apps.withIndex()){
             if(app[2] == "1" && !all)
                 continue
-            objCmd.sudoForResult("pm ${if (enable) "enable" else "disable" } ${app[0]}")
+            if (enable) {
+                TesManager.getInstance().enableApp(app[0]);
+            } else {
+                TesManager.getInstance().disableApp(app[0]);
+            }
             try {
                 findViewById<TextView>(c).setTextColor(if (enable) textColor else textColor2)
             }catch (ex:NullPointerException){}
