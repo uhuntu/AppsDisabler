@@ -334,10 +334,12 @@ class LauncherActivity : AppCompatActivity() {
     private fun changeAll(objCmd:RunCommand, enable:Boolean=false,tag:String="", all:Boolean=false){
         val dbHandler = Db(this, null)
         val apps=dbHandler.getData("app", if(tag!="")"`tag` like '%|$tag|%'" else "")
+        println("apps = ${apps}")
         apps.sortBy{it[1].toLowerCase(Locale.ROOT)}
         for((c,app) in apps.withIndex()){
-            if(app[2] == "1" && !all)
+            if(app[2] == "1" && !all) {
                 continue
+            }
             if (enable) {
                 TesManager.getInstance().enableApp(app[0]);
             } else {
@@ -365,7 +367,7 @@ class LauncherActivity : AppCompatActivity() {
         }
         buttonLauncherDisableAll.setOnClickListener {
             doAsync {
-                changeAll(objCmd)
+                changeAll(objCmd, false, all = true)
                 uiThread {
                     Toast.makeText(this@LauncherActivity, getString(R.string.AllAppsDisabled), Toast.LENGTH_SHORT).show()
                     finish()
@@ -378,7 +380,8 @@ class LauncherActivity : AppCompatActivity() {
         buttonLauncherEnableAll.setOnClickListener {
             println("123")
             doAsync {
-                changeAll(objCmd, true)
+                println("before change all")
+                changeAll(objCmd, true, all = true)
                 println("after change all")
                 uiThread {
                     Toast.makeText(this@LauncherActivity, getString(R.string.AllAppsEnabled), Toast.LENGTH_SHORT).show()
@@ -438,11 +441,11 @@ class LauncherActivity : AppCompatActivity() {
                 }
                 R.id.menuTagDisable -> {
                     popupConfig.dismiss()
-                    changeAll(objCmd, tag=tagId, all = true)
+                    changeAll(objCmd, false, tag = tagId, all = true)
                 }
                 R.id.menuTagEnable -> {
                     popupConfig.dismiss()
-                    changeAll(objCmd, true, tagId, true)
+                    changeAll(objCmd, true, tag = tagId, all = true)
                 }
                 R.id.menuTagLeft -> {
                     popupConfig.dismiss()

@@ -27,7 +27,7 @@ class Db(context: Context, factory: SQLiteDatabase.CursorFactory?) : SQLiteOpenH
     }*/
 
     fun addData(table:String, data:HashMap<String, String>) {
-        // println("DEBUG:DB ADD $table")
+        println("DEBUG:DB ADD $table")
         val values = ContentValues()
         for(dat in data){
             values.put(dat.key, dat.value)
@@ -44,6 +44,7 @@ class Db(context: Context, factory: SQLiteDatabase.CursorFactory?) : SQLiteOpenH
                 if(limit >0) "LIMIT $limit" else "" +
                 if(groupBy !="") "GROUP BY $groupBy" else "" +
                 if(sortBy !="") "ORDER BY $sortBy" else ""
+        println(query)
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
         val rows = arrayListOf<ArrayList<String>>()
